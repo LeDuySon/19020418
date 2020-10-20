@@ -6,6 +6,10 @@
 package com.myproject.dictionary;
 
 import javax.swing.JOptionPane;
+import TranslateApi.TranslateApi;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author son
@@ -16,6 +20,8 @@ public class DictionaryApplication extends javax.swing.JFrame {
      * Creates new form DictionaryApplication
      */ 
     private DictionaryManagement manage = new DictionaryManagement();
+    private TranslateApi translator = new TranslateApi();
+    private FestivalSpeech speaker = new FestivalSpeech();
     public DictionaryApplication() {
         initComponents();
         InitDictionary();
@@ -38,6 +44,25 @@ public class DictionaryApplication extends javax.swing.JFrame {
         popupMenu1 = new java.awt.PopupMenu();
         jProgressBar1 = new javax.swing.JProgressBar();
         jPopupMenu6 = new javax.swing.JPopupMenu();
+        addF = new javax.swing.JFrame();
+        addE = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        addV = new javax.swing.JTextArea();
+        jLabel2 = new javax.swing.JLabel();
+        addButton = new javax.swing.JButton();
+        requireV = new javax.swing.JLabel();
+        requireE = new javax.swing.JLabel();
+        apiTranslate = new javax.swing.JFrame();
+        voiceApi = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        toggleSourceB = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        sourceText = new javax.swing.JTextArea();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        targetText = new javax.swing.JTextArea();
+        apiSearchB = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         explainT = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -45,18 +70,179 @@ public class DictionaryApplication extends javax.swing.JFrame {
         searchT = new javax.swing.JTextField();
         searchB = new javax.swing.JButton();
         addB = new javax.swing.JButton();
-        addPanel = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        engTextField = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        vieTextField = new javax.swing.JTextField();
         removeB = new javax.swing.JButton();
         editB = new javax.swing.JButton();
         saveB = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        voiceButton = new javax.swing.JButton();
+        apiButton = new javax.swing.JButton();
 
         popupMenu1.setLabel("popupMenu1");
+
+        addF.setMinimumSize(new java.awt.Dimension(421, 555));
+        addF.setResizable(false);
+        addF.setSize(new java.awt.Dimension(421, 555));
+        addF.getContentPane().setLayout(null);
+
+        addE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addEActionPerformed(evt);
+            }
+        });
+        addF.getContentPane().add(addE);
+        addE.setBounds(12, 106, 397, 50);
+
+        jLabel1.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
+        jLabel1.setText("English");
+        addF.getContentPane().add(jLabel1);
+        jLabel1.setBounds(12, 74, 88, 26);
+
+        addV.setColumns(20);
+        addV.setRows(5);
+        jScrollPane4.setViewportView(addV);
+
+        addF.getContentPane().add(jScrollPane4);
+        jScrollPane4.setBounds(12, 210, 397, 253);
+
+        jLabel2.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
+        jLabel2.setText("Vietnamese");
+        addF.getContentPane().add(jLabel2);
+        jLabel2.setBounds(12, 186, 89, 18);
+
+        addButton.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
+        addButton.setIcon(new javax.swing.ImageIcon("/home/son/NetBeansProjects/Dictionary/images/plus.png")); // NOI18N
+        addButton.setText("Add");
+        addButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addButtonMouseClicked(evt);
+            }
+        });
+        addF.getContentPane().add(addButton);
+        addButton.setBounds(266, 475, 143, 44);
+
+        requireV.setFont(new java.awt.Font("Ubuntu", 2, 15)); // NOI18N
+        requireV.setForeground(new java.awt.Color(255, 0, 0));
+        requireV.setText("*Required");
+        addF.getContentPane().add(requireV);
+        requireV.setBounds(20, 470, 80, 18);
+
+        requireE.setFont(new java.awt.Font("Ubuntu", 2, 15)); // NOI18N
+        requireE.setForeground(new java.awt.Color(255, 0, 0));
+        requireE.setText("*Required");
+        addF.getContentPane().add(requireE);
+        requireE.setBounds(20, 160, 80, 18);
+
+        apiTranslate.setMaximumSize(new java.awt.Dimension(707, 421));
+        apiTranslate.setMinimumSize(new java.awt.Dimension(707, 421));
+        apiTranslate.setSize(new java.awt.Dimension(707, 421));
+        apiTranslate.addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                apiTranslateWindowClosed(evt);
+            }
+        });
+
+        voiceApi.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
+        voiceApi.setIcon(new javax.swing.ImageIcon("/home/son/NetBeansProjects/Dictionary/images/voice-control.png")); // NOI18N
+        voiceApi.setText("Voice");
+        voiceApi.setBorderPainted(false);
+        voiceApi.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                voiceApiMouseClicked(evt);
+            }
+        });
+        voiceApi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                voiceApiActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setIcon(new javax.swing.ImageIcon("/home/son/NetBeansProjects/Dictionary/images/google-plus-symbol.png")); // NOI18N
+
+        jLabel6.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 24)); // NOI18N
+        jLabel6.setText("DICTIONARY USING GOOGLE API");
+
+        toggleSourceB.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
+        toggleSourceB.setIcon(new javax.swing.ImageIcon("/home/son/NetBeansProjects/Dictionary/images/dog.png")); // NOI18N
+        toggleSourceB.setText(" Eng -> Vie");
+        toggleSourceB.setBorderPainted(false);
+        toggleSourceB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                toggleSourceBMouseClicked(evt);
+            }
+        });
+        toggleSourceB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                toggleSourceBActionPerformed(evt);
+            }
+        });
+
+        sourceText.setColumns(20);
+        sourceText.setFont(new java.awt.Font("DejaVu Sans", 0, 15)); // NOI18N
+        sourceText.setRows(5);
+        sourceText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jScrollPane3.setViewportView(sourceText);
+
+        targetText.setColumns(20);
+        targetText.setFont(new java.awt.Font("DejaVu Sans", 0, 15)); // NOI18N
+        targetText.setRows(5);
+        targetText.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jScrollPane5.setViewportView(targetText);
+
+        apiSearchB.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
+        apiSearchB.setIcon(new javax.swing.ImageIcon("/home/son/NetBeansProjects/Dictionary/images/search-magnifier-interface-symbol.png")); // NOI18N
+        apiSearchB.setText("Search");
+        apiSearchB.setBorderPainted(false);
+        apiSearchB.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                apiSearchBMouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout apiTranslateLayout = new javax.swing.GroupLayout(apiTranslate.getContentPane());
+        apiTranslate.getContentPane().setLayout(apiTranslateLayout);
+        apiTranslateLayout.setHorizontalGroup(
+            apiTranslateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(apiTranslateLayout.createSequentialGroup()
+                .addGap(30, 30, 30)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(92, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, apiTranslateLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(apiTranslateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(apiSearchB, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(apiTranslateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(apiTranslateLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(toggleSourceB, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(voiceApi, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(apiTranslateLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane5)
+                        .addGap(16, 16, 16))))
+        );
+        apiTranslateLayout.setVerticalGroup(
+            apiTranslateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(apiTranslateLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(apiTranslateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
+                .addGroup(apiTranslateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(toggleSourceB)
+                    .addComponent(voiceApi)
+                    .addComponent(apiSearchB))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(apiTranslateLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 158, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3))
+                .addContainerGap())
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setFont(new java.awt.Font("Dialog", 1, 10)); // NOI18N
@@ -64,8 +250,10 @@ public class DictionaryApplication extends javax.swing.JFrame {
 
         explainT.setColumns(20);
         explainT.setRows(5);
+        explainT.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         jScrollPane1.setViewportView(explainT);
 
+        wordList.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         wordList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 wordListMouseClicked(evt);
@@ -73,6 +261,7 @@ public class DictionaryApplication extends javax.swing.JFrame {
         });
         jScrollPane2.setViewportView(wordList);
 
+        searchT.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         searchT.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 searchTInputMethodTextChanged(evt);
@@ -91,6 +280,7 @@ public class DictionaryApplication extends javax.swing.JFrame {
             }
         });
 
+        searchB.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
         searchB.setIcon(new javax.swing.ImageIcon("/home/son/NetBeansProjects/Dictionary/images/search-magnifier-interface-symbol.png")); // NOI18N
         searchB.setText("Search");
         searchB.setBorderPainted(false);
@@ -115,50 +305,6 @@ public class DictionaryApplication extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("English");
-
-        engTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                engTextFieldActionPerformed(evt);
-            }
-        });
-
-        jLabel2.setText("Vietnamese");
-
-        vieTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                vieTextFieldActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout addPanelLayout = new javax.swing.GroupLayout(addPanel);
-        addPanel.setLayout(addPanelLayout);
-        addPanelLayout.setHorizontalGroup(
-            addPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(addPanelLayout.createSequentialGroup()
-                .addGroup(addPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(engTextField)
-                    .addGroup(addPanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(addPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2))
-                        .addGap(0, 72, Short.MAX_VALUE))
-                    .addComponent(vieTextField))
-                .addContainerGap())
-        );
-        addPanelLayout.setVerticalGroup(
-            addPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(addPanelLayout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(engTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(vieTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
         removeB.setFont(new java.awt.Font("DejaVu Serif Condensed", 1, 15)); // NOI18N
         removeB.setIcon(new javax.swing.ImageIcon("/home/son/NetBeansProjects/Dictionary/images/trash-can.png")); // NOI18N
         removeB.setText("Remove");
@@ -167,6 +313,11 @@ public class DictionaryApplication extends javax.swing.JFrame {
         removeB.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 removeBMouseClicked(evt);
+            }
+        });
+        removeB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeBActionPerformed(evt);
             }
         });
 
@@ -200,10 +351,30 @@ public class DictionaryApplication extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Voice");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jLabel3.setIcon(new javax.swing.ImageIcon("/home/son/NetBeansProjects/Dictionary/images/dictionary-book-with-letters-a-to-z.png")); // NOI18N
+
+        voiceButton.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
+        voiceButton.setIcon(new javax.swing.ImageIcon("/home/son/NetBeansProjects/Dictionary/images/voice-control.png")); // NOI18N
+        voiceButton.setText("Voice");
+        voiceButton.setBorderPainted(false);
+        voiceButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                voiceButtonMouseClicked(evt);
+            }
+        });
+        voiceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                voiceButtonActionPerformed(evt);
+            }
+        });
+
+        apiButton.setFont(new java.awt.Font("DejaVu Sans Condensed", 1, 15)); // NOI18N
+        apiButton.setIcon(new javax.swing.ImageIcon("/home/son/NetBeansProjects/Dictionary/images/google-plus.png")); // NOI18N
+        apiButton.setText("Using GoogleAPI");
+        apiButton.setBorderPainted(false);
+        apiButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                apiButtonMouseClicked(evt);
             }
         });
 
@@ -216,53 +387,50 @@ public class DictionaryApplication extends javax.swing.JFrame {
                     .addComponent(jScrollPane2)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(searchT, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(searchB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(searchT, javax.swing.GroupLayout.PREFERRED_SIZE, 268, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(searchB, javax.swing.GroupLayout.DEFAULT_SIZE, 112, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(addB, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
+                        .addGap(33, 33, 33)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(253, 253, 253)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(removeB, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                            .addComponent(addB, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(53, 53, 53)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(saveB, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(editB, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(removeB, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(248, 248, 248))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(addPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(367, 367, 367))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(21, 21, 21))))
+                            .addComponent(saveB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(editB, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(apiButton, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(voiceButton, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 545, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(editB)
-                            .addComponent(addB))
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(addB)
+                            .addComponent(editB))
                         .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(saveB)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(removeB))
-                            .addComponent(addPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1)
-                        .addGap(3, 3, 3)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(saveB)
+                            .addComponent(removeB)))
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(72, 72, 72)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(voiceButton)
+                    .addComponent(apiButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -278,7 +446,6 @@ public class DictionaryApplication extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
     private void InitDictionary(){
         // Set add panel invisibility
-        addPanel.setVisible(false);
 //        removeTextF.setVisible(false);
         manage.insertFromFile();
     }
@@ -301,34 +468,19 @@ public class DictionaryApplication extends javax.swing.JFrame {
     private void wordListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_wordListMouseClicked
         // TODO add your handling code here:
         String wget = wordList.getSelectedValue();
+        System.out.println(wget.length());
         explainT.setText(manage.dictionaryLookup(wget));
     }//GEN-LAST:event_wordListMouseClicked
 
-    private void engTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_engTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_engTextFieldActionPerformed
-
     private void addBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addBMouseClicked
         // TODO add your handling code here:
-        if(!addPanel.isVisible()){
-            addPanel.setVisible(true);
-            addB.setText("Add Word");
-        }else{
-            String engW = engTextField.getText();
-            String vieW = vieTextField.getText();
-            
-//            System.out.println(manage.dictionaryLookup(engW));
-            if(manage.dictionaryLookup(engW) != "Not find"){
-                explainT.setText("Existed Word!!! \nPlease add new word!");
-            }else{
-                manage.addWord(engW, vieW);
-                addPanel.setVisible(false);
-                addB.setText("Add");
-                explainT.setText("Add Successfully!!!");
-                return;
-            }
+        if(addF.isVisible()){
+            return;
         }
-        
+        addF.setVisible(true);
+        addF.setLocationRelativeTo(null);
+        requireE.setVisible(false);
+        requireV.setVisible(false);
     }//GEN-LAST:event_addBMouseClicked
 
     private void removeBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_removeBMouseClicked
@@ -349,10 +501,6 @@ public class DictionaryApplication extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, rs);
         }
     }//GEN-LAST:event_removeBMouseClicked
-
-    private void vieTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_vieTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_vieTextFieldActionPerformed
 
     private void searchTInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_searchTInputMethodTextChanged
         // TODO add your handling code here:
@@ -407,9 +555,121 @@ public class DictionaryApplication extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_editBActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void voiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voiceButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_voiceButtonActionPerformed
+
+    private void removeBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_removeBActionPerformed
+
+    private void addEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addEActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addEActionPerformed
+
+    private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
+        // TODO add your handling code here:
+        String engW = addE.getText();
+        String vieW = addV.getText();
+        System.out.println(engW);
+        if(vieW.equals("") && engW.equals("")){
+            requireE.setVisible(true);
+            requireV.setVisible(true);
+
+        }else if(vieW.equals("")){
+            requireV.setVisible(true);
+        }else if(engW.equals("")){
+            requireE.setVisible(true);
+        }else{
+            requireE.setVisible(false);
+            requireV.setVisible(false);
+            
+            int index = manage.BinarySearch(engW);
+            if(index < 0){
+                manage.addWord(engW, vieW);
+                JOptionPane.showMessageDialog(rootPane, "Add successful!!");
+                addF.setVisible(false);
+            }else{
+                manage.appendContent(vieW, index);
+                JOptionPane.showMessageDialog(rootPane, "Add successful!!");
+                addF.setVisible(false);
+            }
+        }
+    }//GEN-LAST:event_addButtonMouseClicked
+
+    private void apiButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_apiButtonMouseClicked
+        // TODO add your handling code here:
+        if(apiTranslate.isVisible()){
+            return;
+        }
+        apiTranslate.setVisible(true);
+        apiTranslate.setLocationRelativeTo(null);
+    }//GEN-LAST:event_apiButtonMouseClicked
+
+    private void voiceApiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voiceApiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_voiceApiActionPerformed
+
+    private void toggleSourceBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggleSourceBActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_toggleSourceBActionPerformed
+
+    private void apiSearchBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_apiSearchBMouseClicked
+        // TODO add your handling code here:
+        if(translator.getNum_request() > 100){
+            JOptionPane.showMessageDialog(rootPane, "Too much requests! Disconnected");
+            apiTranslate.setVisible(false);
+            return;
+        }
+        String translateW = sourceText.getText();
+        String[] converter = toggleSourceB.getText().split("->");
+        String source = converter[0].trim();
+        String target = converter[1].trim();
+        System.out.println(source);
+        String outString = "";
+        if(source.equals("Eng")){
+            try {
+                outString = translator.translate("en", "vi", translateW);
+            } catch (IOException ex) {
+                Logger.getLogger(DictionaryApplication.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            try {
+                outString = translator.translate("vi", "en", translateW);
+            } catch (IOException ex) {
+                Logger.getLogger(DictionaryApplication.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        targetText.setText(outString);
+    }//GEN-LAST:event_apiSearchBMouseClicked
+
+    private void toggleSourceBMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_toggleSourceBMouseClicked
+        // TODO add your handling code here:
+        if(toggleSourceB.getText().equals(" Eng -> Vie")){
+            toggleSourceB.setText(" Vie -> Eng");
+        }else{
+            toggleSourceB.setText(" Eng -> Vie");
+        }
+    }//GEN-LAST:event_toggleSourceBMouseClicked
+
+    private void voiceButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voiceButtonMouseClicked
+        // TODO add your handling code here:
+        String source = searchT.getText();
+        speaker.speak(source);
+    }//GEN-LAST:event_voiceButtonMouseClicked
+
+    private void voiceApiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voiceApiMouseClicked
+        // TODO add your handling code here:
+        String source = sourceText.getText();
+        speaker.speak(source);
+
+    }//GEN-LAST:event_voiceApiMouseClicked
+
+    private void apiTranslateWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_apiTranslateWindowClosed
+        // TODO add your handling code here:
+        sourceText.setText("");
+        targetText.setText("");
+    }//GEN-LAST:event_apiTranslateWindowClosed
 
     /**
      * @param args the command line arguments
@@ -421,7 +681,7 @@ public class DictionaryApplication extends javax.swing.JFrame {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
         
          */
-        DictionaryApplication apps = new DictionaryApplication();
+//        DictionaryApplication apps = new DictionaryApplication();
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -442,20 +702,28 @@ public class DictionaryApplication extends javax.swing.JFrame {
          
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new DictionaryApplication().setVisible(true);
+            DictionaryApplication da = new DictionaryApplication();
+            da.setVisible(true);
+            da.setLocationRelativeTo(null);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addB;
-    private javax.swing.JPanel addPanel;
+    private javax.swing.JButton addButton;
+    private javax.swing.JTextField addE;
+    private javax.swing.JFrame addF;
+    private javax.swing.JTextArea addV;
+    private javax.swing.JButton apiButton;
+    private javax.swing.JButton apiSearchB;
+    private javax.swing.JFrame apiTranslate;
     private javax.swing.JButton editB;
-    private javax.swing.JTextField engTextField;
     private javax.swing.JTextArea explainT;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JPopupMenu jPopupMenu2;
     private javax.swing.JPopupMenu jPopupMenu3;
@@ -465,12 +733,21 @@ public class DictionaryApplication extends javax.swing.JFrame {
     private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private java.awt.PopupMenu popupMenu1;
     private javax.swing.JButton removeB;
+    private javax.swing.JLabel requireE;
+    private javax.swing.JLabel requireV;
     private javax.swing.JButton saveB;
     private javax.swing.JButton searchB;
     private javax.swing.JTextField searchT;
-    private javax.swing.JTextField vieTextField;
+    private javax.swing.JTextArea sourceText;
+    private javax.swing.JTextArea targetText;
+    private javax.swing.JButton toggleSourceB;
+    private javax.swing.JButton voiceApi;
+    private javax.swing.JButton voiceButton;
     private javax.swing.JList<String> wordList;
     // End of variables declaration//GEN-END:variables
 }

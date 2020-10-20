@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.*;
 import com.myproject.dictionary.utils.*;
 import java.util.stream.Collectors;
+import java.util.regex.*;
 
 
 // fuzzy seach
@@ -93,7 +94,7 @@ public class DictionaryManagement {
                 for(int i = 0; i < explainL.length; i++){
                     rs += explainL[i] + "\n";
                 }
-                dict.setList(new Word(data[0], rs));
+                dict.setList(new Word(data[0].trim(), rs));
             }
             myReader.close();
         } catch (FileNotFoundException e) {
@@ -145,7 +146,6 @@ public class DictionaryManagement {
         String rs = "";
         if(index >= 0){
             for(int i = index+1; i < dict.getList().size();i++){
-                System.out.println(i);
                 if(!dict.getList().get(i).getWord_target().startsWith(s)){
                     break;
                 }
@@ -153,16 +153,20 @@ public class DictionaryManagement {
                 rs += "-_-";
             }
         }
-        System.out.println(rs);
         return rs;
 
     }
     
     public int BinarySearch(String keyWord) {
+        keyWord = keyWord.replaceAll("[ ]+", " ");
+        System.out.println(keyWord);
         int left = 0;
         int right = dict.getList().size() - 1;
         if(keyWord == null){
             return -1;
+        }
+        if(keyWord.equals("aba")){
+            System.out.println("WTF????????????");
         }
         while (left <= right) {
             int mid = left + (right - left) / 2;
@@ -217,8 +221,8 @@ public class DictionaryManagement {
 //                return w.getWord_explain();
 //            }
 //        }
-        int rs = BinarySearch(s);
         
+        int rs = BinarySearch(s);
         if (rs >= 0) {
             return dict.getList().get(rs).getWord_explain();
         }
@@ -296,6 +300,13 @@ public class DictionaryManagement {
     public void addWord(String s1, String s2){
         dict.setList(new Word(s1, s2));      
         Collections.sort(dict.getList(), (a, b) -> a.getWord_target().compareTo(b.getWord_target()));
+    }
+    
+    public void appendContent(String appendW, int index){
+        String oldW = dict.getList().get(index).getWord_explain();
+        String newW = oldW + "\n" + appendW;
+//        System.out.println(newW);
+        dict.getList().get(index).setWord_explain(newW);
     }
     public String removeWord(String s) {
         int rs = BinarySearch(s);
