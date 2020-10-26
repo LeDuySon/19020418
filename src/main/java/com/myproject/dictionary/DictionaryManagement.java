@@ -32,7 +32,7 @@ import me.xdrop.fuzzywuzzy.model.BoundExtractedResult;
 public class DictionaryManagement {
     public Dictionary dict;
     private Utils utils = new Utils();
-    private static final String fileName = "dictionaries.txt";
+    private static final String fileName = "dictionary.txt";
     
     public DictionaryManagement(){
         dict = new Dictionary();
@@ -88,8 +88,11 @@ public class DictionaryManagement {
                 
 //                System.out.println(data[1]);
 //                break;
-                
+                if(data.length <= 1){
+                    continue;
+                }
                 String[] explainL = data[1].split("--splitinhere--");
+//                System.out.println();
                 String rs = "";
                 for(int i = 0; i < explainL.length; i++){
                     rs += explainL[i] + "\n";

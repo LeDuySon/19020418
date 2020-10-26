@@ -132,7 +132,6 @@ public class DictionaryApplication extends javax.swing.JFrame {
         addF.getContentPane().add(requireE);
         requireE.setBounds(20, 160, 80, 18);
 
-        apiTranslate.setMaximumSize(new java.awt.Dimension(707, 421));
         apiTranslate.setMinimumSize(new java.awt.Dimension(707, 421));
         apiTranslate.setSize(new java.awt.Dimension(707, 421));
         apiTranslate.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -655,13 +654,21 @@ public class DictionaryApplication extends javax.swing.JFrame {
     private void voiceButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voiceButtonMouseClicked
         // TODO add your handling code here:
         String source = searchT.getText();
-        speaker.speak(source);
+        try {
+            speaker.speak(source);
+        } catch (IOException ex) {
+            Logger.getLogger(DictionaryApplication.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_voiceButtonMouseClicked
 
     private void voiceApiMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_voiceApiMouseClicked
         // TODO add your handling code here:
         String source = sourceText.getText();
-        speaker.speak(source);
+        try {
+            speaker.speak(source);
+        } catch (IOException ex) {
+            Logger.getLogger(DictionaryApplication.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }//GEN-LAST:event_voiceApiMouseClicked
 
