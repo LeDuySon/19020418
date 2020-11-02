@@ -14,11 +14,20 @@ import java.util.List;
 
 public class Dictionary {
     private List<Word> list = new ArrayList<Word>();
+    private int num_word;
     
     public Dictionary(){
+        num_word = 0;
+    }
+
+    public int getNum_word() {
+        return num_word;
     }
     
+    
+    
     public void setList(Word w) {
+        num_word++;
         this.list.add(w);
     }
 

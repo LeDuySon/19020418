@@ -23,6 +23,12 @@ import com.myproject.dictionary.utils.*;
 import java.util.stream.Collectors;
 import java.util.regex.*;
 
+//Database
+import DatabaseDict.ConnectionUtils;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Connection;
 
 // fuzzy seach
 import me.xdrop.fuzzywuzzy.FuzzySearch;
@@ -31,12 +37,17 @@ import me.xdrop.fuzzywuzzy.model.BoundExtractedResult;
 
 public class DictionaryManagement {
     public Dictionary dict;
-    private Utils utils = new Utils();
+    private Utils utils;
+//    private String oldSearch;
     private static final String fileName = "dictionary.txt";
-    
+    private ConnectionUtils connector;
+            
     public DictionaryManagement(){
         dict = new Dictionary();
+        utils = new Utils();
+        connector = new ConnectionUtils();
     }
+    
     public static String getFileName() {
         return fileName;
     }
@@ -94,7 +105,7 @@ public class DictionaryManagement {
                 String[] explainL = data[1].split("--splitinhere--");
 //                System.out.println();
                 String rs = "";
-                for(int i = 0; i < explainL.length; i++){
+                for(int i = 0; i < explainL.length; i++){       
                     rs += explainL[i] + "\n";
                 }
                 dict.setList(new Word(data[0].trim(), rs));
@@ -104,8 +115,32 @@ public class DictionaryManagement {
             System.out.println("An error occurred when trying to reading file");
             e.printStackTrace();
         }
-
+        Collections.sort(dict.getList(), (a, b) -> a.getWord_target().compareTo(b.getWord_target()));
     }
+    
+    public void insertFromDataBase() throws SQLException, ClassNotFoundException{
+        try (Connection connection = connector.getMyConnection()) {
+            Statement statement = connection.createStatement();
+            String sql = "Select word, definition from words";
+            ResultSet rs = statement.executeQuery(sql);
+            int count = 0;
+            while (rs.next()) {
+                // Di chuyển con trỏ xuống bản ghi kế tiếp.
+                String word = rs.getString("word");
+                String definition = rs.getString("definition");
+                dict.setList(new Word(word.trim(), definition.trim()));
+//                System.out.println(dict.getList().get(count).getWord_target());
+//                if(count++ == 20){
+//                    break;
+//                }
+            }
+            Collections.sort(dict.getList(), (a, b) -> a.getWord_target().compareTo(b.getWord_target()));
+
+            // Đóng kết nối
+        }
+    }
+    
+    
 
     public void dictionaryExportToFile() {
         File info = new File(fileName);
@@ -142,18 +177,31 @@ public class DictionaryManagement {
     }
 
     public String suggestSearch(String s) {
+        if(s.equals("")){
+            return "";
+        }
+    
+        s = s.replaceAll("[ ]+", " ");
+        s = s.toLowerCase();
         int index = BinarySearch(s);
         if(index < 0){
             index = -index -1;
         }
+        int limit = 25;
         String rs = "";
         if(index >= 0){
-            for(int i = index+1; i < dict.getList().size();i++){
-                if(!dict.getList().get(i).getWord_target().startsWith(s)){
+            for(int i = index; i < dict.getList().size();i++){
+                if(dict.getList().get(i).getWord_target().startsWith(s)){
+                    rs += dict.getList().get(i).getWord_target();
+//                    System.out.println("123");
+                    rs += "-_-";
+                    limit--;
+                    if(limit == 0){
+                        break;
+                    }
+                }else{
                     break;
-                }
-                rs += dict.getList().get(i).getWord_target();
-                rs += "-_-";
+                }                
             }
         }
         return rs;
@@ -162,15 +210,14 @@ public class DictionaryManagement {
     
     public int BinarySearch(String keyWord) {
         keyWord = keyWord.replaceAll("[ ]+", " ");
-        System.out.println(keyWord);
         int left = 0;
         int right = dict.getList().size() - 1;
         if(keyWord == null){
             return -1;
         }
-        if(keyWord.equals("aba")){
-            System.out.println("WTF????????????");
-        }
+//        if(keyWord.equals("aba")){
+//            System.out.println("WTF????????????");
+//        }
         while (left <= right) {
             int mid = left + (right - left) / 2;
             int compareResult = dict.getList().get(mid).getWord_target().compareTo(keyWord);
@@ -192,10 +239,10 @@ public class DictionaryManagement {
          */
         if (left >= dict.getList().size()) return -right - 1;
         if (right < 0) return -left - 1;
-        if (dict.getList().get(left).getWord_target().compareTo(keyWord) <= dict.getList().get(right).getWord_target().compareTo(keyWord))
+        //if (dict.getList().get(left).getWord_target().compareTo(keyWord) <= dict.getList().get(right).getWord_target().compareTo(keyWord))
         //if (distance(wordsList.get(left).getWordTarget(), keyWord) <= distance(wordsList.get(right).getWordTarget(), keyWord))
             return -left - 1;
-        else return -right - 1;
+        //else return -right - 1;
     }
 //    public int BinarySearch(String wordF) {
 //        int lo = 0;
@@ -233,22 +280,36 @@ public class DictionaryManagement {
     }
     
     public String fuzzySearch(String s){
-        List<String> choice = dict.getList().stream().map(ele -> ele.getWord_target()).collect(Collectors.toList());
+//        System.out.println(s);
+//        List<String> choice = dict.getList().stream().map(ele -> ele.getWord_target()).collect(Collectors.toList());
 //        for(int i = 0; i < choice.size(); i++){
 //            System.out.println(choice.get(i));
 //        }
-        List<ExtractedResult> match = FuzzySearch.extractTop(s, choice, 5);
+//        List<ExtractedResult> match = FuzzySearch.extractTop(s, choice, 5);
+//        String rs = "";
+//        for(int i = 0; i < match.size(); i++){
+//            String cpr = match.get(i).getString();
+//            if(cpr.length() <= s.length()){
+//                rs = cpr;
+//                break;
+//            }
+//        }
+       
         String rs = "";
-        for(int i = 0; i < match.size(); i++){
-            String cpr = match.get(i).getString();
-            if(cpr.length() == s.length()){
-                rs = cpr;
-                break;
-            }
+        int max1 = 0;
+        for(int i = 0; i < dict.getList().size();i++){
+            
+            int l = utils.LongestCommonSubString(dict.getList().get(i).getWord_target(), s);
+            if(l > max1){
+                max1 = l;
+                rs = dict.getList().get(i).getWord_target();
+            }   
         }
+//        System.out.println(max1);
 //        System.out.println(rs);
         return rs;
     }
+    
     public String dictionarySearcher(String s){
         List <Pairs<String, Integer>> score = new ArrayList<Pairs<String, Integer>>();
         for (int i = 0; i < dict.getList().size(); i++){
